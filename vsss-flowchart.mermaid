@@ -1,0 +1,143 @@
+flowchart TD
+    subgraph "INQUIRY STAGE"
+        A1[Initial Contact] --> A2{Contact Method?}
+        A2 -->|Phone| A3[Phone Script Initiated]
+        A2 -->|Email| A4[Email Template Response]
+        A2 -->|Web Form| A5[Auto-Response + CRM Entry]
+        
+        A3 --> A6[Capture Basic Details]
+        A4 --> A6
+        A5 --> A6
+        
+        A6 --> A7{Eligible?}
+        A7 -->|Yes| A8[Schedule Needs Analysis Call]
+        A7 -->|No| A9[Explain Requirements + Exit]
+        A7 -->|Unclear| A10[Request Additional Information]
+        
+        A10 --> A6
+    end
+    
+    subgraph "NEEDS ANALYSIS STAGE"
+        A8 --> B1[Conduct Needs Analysis Call]
+        B1 --> B2[Document Vehicle Requirements]
+        B2 --> B3[Explain Salary Sacrifice Process]
+        B3 --> B4[Confirm Budget Parameters]
+        B4 --> B5{Interest Level?}
+        
+        B5 -->|High| B6[Proceed to Quoting]
+        B5 -->|Medium| B7[Schedule Follow-up Call in 48hrs]
+        B5 -->|Low| B8[Send Information Pack]
+        
+        B7 -->|Follow-up Completed| B9{Interest Changed?}
+        B9 -->|Increased| B6
+        B9 -->|Same| B7
+        B9 -->|Decreased| B8
+        
+        B8 -->|After 5 Days| B10[Final Follow-up Call]
+        B10 --> B11{Response?}
+        B11 -->|Positive| B6
+        B11 -->|Negative| B12[Move to Inactive Pipeline]
+    end
+    
+    subgraph "QUOTING STAGE"
+        B6 --> C1[Research Vehicle Options]
+        C1 --> C2[Calculate Tax Implications]
+        C2 --> C3[Prepare Indicative VSSS]
+        C3 --> C4[Send Indicative VSSS]
+        C4 -->|Set 12hr Timer| C5[Follow-up Call]
+        
+        C5 --> C6{Customer Response?}
+        C6 -->|Accepts| C10[Prepare Final VSSS]
+        C6 -->|Requests Changes| C7[Document Required Changes]
+        C6 -->|Needs Time| C8[Schedule Decision Call]
+        C6 -->|Declines| C9[Document Reasons + Exit]
+        
+        C7 --> C3
+        C8 -->|Decision Made| C6
+        
+        C10 --> C11[Send Final VSSS via DocuSign]
+        C11 --> C12{Signed Within 48hrs?}
+        C12 -->|Yes| D1
+        C12 -->|No| C13[Follow-up Call]
+        
+        C13 --> C14{Still Interested?}
+        C14 -->|Yes| C15[Extend Deadline 48hrs]
+        C14 -->|No| C16[Document Reasons + Exit]
+        
+        C15 --> C12
+    end
+    
+    subgraph "APPROVAL STAGE"
+        D1[Receive Signed VSSS] --> D2[Submit for Employer Approval]
+        D2 --> D3{Approval Status?}
+        D3 -->|Approved| D7[Notify Customer of Approval]
+        D3 -->|Pending| D4[Daily Status Check]
+        D3 -->|Rejected| D5[Document Reasons]
+        
+        D4 -->|After 3 Days| D6[Escalate to Manager]
+        D6 --> D3
+        
+        D5 --> D8[Discuss Alternatives with Customer]
+        D8 --> D9{Alternative Path?}
+        D9 -->|Modify Application| C7
+        D9 -->|Cancel| D10[Document Cancellation + Exit]
+    end
+    
+    subgraph "VEHICLE ORDERING STAGE"
+        D7 --> E1[Contact Dealership]
+        E1 --> E2[Confirm Vehicle Availability]
+        E2 --> E3{Available?}
+        E3 -->|Yes| E7[Place Order with Dealership]
+        E3 -->|No| E4[Discuss Alternatives]
+        
+        E4 --> E5{Decision?}
+        E5 -->|Select Alternative| E6[Update VSSS]
+        E5 -->|Wait| E8[Set Backorder Status]
+        E5 -->|Cancel| E9[Process Cancellation + Exit]
+        
+        E6 --> C10
+        E8 -->|Check Weekly| E3
+        
+        E7 --> E10[Process Purchase Order]
+        E10 --> E11[Send Order Confirmation to Customer]
+        E11 --> E12[Schedule Weekly Updates]
+    end
+    
+    subgraph "VEHICLE DELIVERY STAGE"
+        E12 --> F1[Monitor Build/Delivery Progress]
+        F1 -->|30 Days Before Delivery| F2[Confirm Delivery Details]
+        F2 --> F3[Arrange Insurance]
+        F3 --> F4[Schedule Handover]
+        
+        F4 --> F5{Delivery On Schedule?}
+        F5 -->|Yes| F8[Pre-delivery Inspection]
+        F5 -->|No| F6[Notify Customer of Delay]
+        
+        F6 --> F7[Reschedule Delivery]
+        F7 --> F5
+        
+        F8 --> F9[Process Final Documentation]
+        F9 --> F10[Conduct Handover Meeting]
+        F10 --> F11[Complete Delivery Checklist]
+        F11 --> G1[Set Follow-up Task]
+    end
+    
+    subgraph "AFTER-SALES STAGE"
+        G1 --> G2[7-Day Satisfaction Call]
+        G2 --> G3[Document Feedback]
+        G3 --> G4{Issues Identified?}
+        G4 -->|Yes| G5[Create Resolution Plan]
+        G4 -->|No| G6[Schedule 3-Month Follow-up]
+        
+        G5 --> G7[Resolve Issues]
+        G7 --> G6
+        
+        G6 --> G8[Quarterly Check-in Calls]
+        G8 -->|10 Months| G9[Begin Renewal Process]
+    end
+    
+    A9 -.-> H1[EXIT: Not Eligible]
+    C9 -.-> H2[EXIT: Quote Declined]
+    C16 -.-> H3[EXIT: VSSS Not Signed]
+    D10 -.-> H4[EXIT: Approval Rejected]
+    E9 -.-> H5[EXIT: Order Cancelled]
